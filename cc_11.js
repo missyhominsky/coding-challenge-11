@@ -61,7 +61,35 @@ class Borrower {
     addBook(book) {  // add a new book to the library
       this.books.push(book);
     }
-  
+    //Task 4- Implementing Book Borrowing 
+    registerBorrower(borrower) {
+        this.borrowers.push(borrower);
+    }
+
+    lendBook(borrowerId, isbn) { // allows a book to be borrow if it is available 
+        const book = this.books.find(b => b.isbn === isbn);
+        const borrower = this.borrowers.find(b => b.id === borrowerId);
+        
+        if (!book) {
+            console.log("Book not found.");
+            return;
+        }
+        
+        if (book.copies < 1) {
+            console.log("No copies available.");
+            return;
+        }
+        
+        if (!borrower) {
+            console.log("Borrower not found.");
+            return;
+        }
+        
+        book.copies -= 1; //reduce available copies by 1 
+        borrower.borrowedBooks.push(book.title);
+        console.log(`Book borrowed successfully: ${book.title}`);
+    }
+
     listBooks() {
       this.books.forEach(book => console.log(book.getDetails()));
     }
@@ -72,3 +100,11 @@ class Borrower {
   library.addBook(new Book("The Great Gatsby", "F. Scott Fitzgerald", 123456, 4));
   library.listBooks();
   // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+
+//Task 4- Implementing Book Borrowing test cases 
+library.lendBook(201, 123456);
+console.log(book1.getDetails());
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
+console.log(borrower1.borrowedBooks);
+// Expected output: ["The Great Gatsby"]
+
